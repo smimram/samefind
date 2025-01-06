@@ -4,7 +4,14 @@ module M = struct
     type t = int * Digest.t
     let compare = compare
   end
-  module M = Map.Make(O)
+  module M = struct
+    include Map.Make(O)
+
+    (* Backward compatibility *)
+    let add_to_list x data m =
+      let add = function None -> Some [data] | Some l -> Some (data :: l) in
+      update x add m
+  end
 
   type t = string list M.t
 

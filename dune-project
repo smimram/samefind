@@ -11,6 +11,6 @@
  (name samefind)
  (synopsis "Find files with same contents")
  (depends
-   (ocaml (>= 5.1))
+   ocaml
  )
 )
