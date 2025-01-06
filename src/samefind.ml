@@ -25,11 +25,13 @@ module M = struct
 end
 
 let () =
+  let exclude = ref [] in
   let extensions = ref [] in
   let files = ref [] in
   Arg.parse
     (Arg.align
        [
+         "--exclude", Arg.String (fun s -> exclude := s :: !exclude), " File names to exclude.";
          "--extension", Arg.String (fun s -> extensions := s :: !extensions), " Extension of files to consider."
        ]
     )
@@ -38,7 +40,11 @@ let () =
   let rec find fname =
     if Sys.is_directory fname then
       let dir = fname in
-      dir |> Sys.readdir |> Array.to_list |> List.map (fun f -> if dir = "." then f else Filename.concat dir f) |> List.map find |> List.flatten
+      dir
+      |> Sys.readdir
+      |> Array.to_list
+      |> List.filter (fun fname -> not (List.mem fname !exclude))
+      |> List.map (fun f -> if dir = "." then f else Filename.concat dir f) |> List.map find |> List.flatten
     else
       [fname]
   in
