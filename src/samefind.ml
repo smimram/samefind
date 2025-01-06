@@ -39,7 +39,7 @@ let () =
     (Arg.align
        [
          "--exclude", Arg.String (fun s -> exclude := s :: !exclude), " File names to exclude.";
-         "--extension", Arg.String (fun s -> extensions := s :: !extensions), " Extension of files to consider."
+         "--extension", Arg.String (fun s -> extensions := s :: !extensions), " Extension of files to consider.";
        ]
     )
     (fun s -> files := s :: !files)
@@ -64,10 +64,10 @@ let () =
   (* List.iter (fun f -> Printf.printf "- considering %s\n%!" f) files; *)
   let m = List.fold_left M.add M.empty files in
   M.iter m
-    (fun (_n,md5) l ->
+    (fun (n,md5) l ->
        if List.length l > 1 then
          let l = List.sort compare l in
-         print_endline (Digest.to_hex md5 ^ ":");
+         print_endline (Printf.sprintf "%s (%d bytes):" (Digest.to_hex md5) n);
          List.iter (fun f -> print_endline ("- " ^ f)) l;
          print_newline ();
     )
