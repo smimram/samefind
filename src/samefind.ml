@@ -25,10 +25,12 @@ module M = struct
 end
 
 let () =
+  let extensions = ref [] in
   let files = ref [] in
   Arg.parse
     (Arg.align
        [
+         "--extension", Arg.String (fun s -> extensions := s :: !extensions), " Extension of files to consider."
        ]
     )
     (fun s -> files := s :: !files)
@@ -41,6 +43,10 @@ let () =
       [fname]
   in
   let files = List.map find !files |> List.flatten |> List.sort compare in
+  let files =
+    if !extensions = [] then files else
+      List.filter (fun fname -> List.exists (fun ext -> String.ends_with ~suffix:ext fname) !extensions) files
+  in
   Printf.printf "Considering %d files.\n\n%!" (List.length files);
   (* List.iter (fun f -> Printf.printf "- considering %s\n%!" f) files; *)
   let m = List.fold_left M.add M.empty files in
@@ -49,5 +55,6 @@ let () =
        if List.length l > 1 then
          let l = List.sort compare l in
          print_endline (Digest.to_hex md5 ^ ":");
-         List.iter (fun f -> print_endline ("- " ^ f)) l
+         List.iter (fun f -> print_endline ("- " ^ f)) l;
+         print_newline ();
     )
