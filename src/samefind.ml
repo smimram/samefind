@@ -60,14 +60,14 @@ let () =
     if !extensions = [] then files else
       List.filter (fun fname -> List.exists (fun ext -> String.ends_with ~suffix:ext fname) !extensions) files
   in
-  Printf.printf "Considering %d files.\n\n%!" (List.length files);
+  Printf.printf "Considering %d files.\n%!" (List.length files);
   (* List.iter (fun f -> Printf.printf "- considering %s\n%!" f) files; *)
   let m = List.fold_left M.add M.empty files in
   M.iter m
     (fun (n,md5) l ->
        if List.length l > 1 then
          let l = List.sort compare l in
+         print_newline ();
          print_endline (Printf.sprintf "%s (%d bytes):" (Digest.to_hex md5) n);
          List.iter (fun f -> print_endline ("- " ^ f)) l;
-         print_newline ();
     )
