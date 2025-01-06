@@ -1,0 +1,5 @@
+(rule
+ (alias runtest)
+ (deps a1 a2 b)
+ (action (run ../src/samefind.exe .))
+)
