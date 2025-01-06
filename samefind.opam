@@ -9,7 +9,7 @@ homepage: "https://github.com/smimram/samefind"
 bug-reports: "https://github.com/smimram/samefind/issues"
 depends: [
   "dune" {>= "2.9"}
-  "re"
+  "ocaml" {>= "5.1"}
   "odoc" {with-doc}
 ]
 build: [
