@@ -2,7 +2,7 @@
 
 Find multiple files with the same contents.
 
-## Usage
+## Usage
 
 Basic usage example:
 
